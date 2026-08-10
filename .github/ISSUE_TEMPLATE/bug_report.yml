@@ -1,0 +1,71 @@
+name: "🐛 Bug Report"
+description: "Something isn't working as expected 🤔"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report! Please fill out this form as completely as
+        possible — it helps a lot to reproduce and fix the issue quickly.
+
+  - type: textarea
+    attributes:
+      label: Current and expected behavior
+      description: What is Zapkube doing, and what would you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce it? Include the resource type or view involved if relevant.
+      placeholder: |
+        1. Open a tab on cluster X
+        2. Split the pane vertically
+        3. Open the log viewer on a pod
+        4. …
+    validations:
+      required: false
+
+  - type: input
+    attributes:
+      label: Zapkube version
+      description: "Visible in the About window, or run `zapkube --version`."
+      placeholder: "v0.20.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Operating system
+      options:
+        - macOS (Apple Silicon)
+        - macOS (Intel)
+        - Linux (x86-64)
+        - Linux (arm64)
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: OS version
+      placeholder: "macOS 15.3? Ubuntu 24.04? Fedora 41? Arch?"
+    validations:
+      required: false
+
+  - type: input
+    attributes:
+      label: Kubernetes version & distribution
+      placeholder: "1.31 on EKS? GKE? AKS? OpenShift? Talos? k3s? Vanilla?"
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Screenshots, logs or anything else
+      description: |
+        Anything that helps: screenshots, a screen recording, error messages, relevant log output.
+        Please redact cluster names, hostnames and any sensitive data.
+    validations:
+      required: false

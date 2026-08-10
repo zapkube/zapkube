@@ -1,0 +1,23 @@
+name: "🚀 Feature Request"
+description: "I have a suggestion for Zapkube!"
+labels: ["feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a new feature! Before submitting, it's worth checking
+        the [roadmap](https://zapkube.com#roadmap) and the existing issues — it may already be planned.
+
+  - type: textarea
+    attributes:
+      label: What problem are you trying to solve?
+      description: Describe the workflow that's painful today, and how you work around it.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Do you have a suggestion on how to solve it?
+      description: How would you like it to work in Zapkube? Mockups or references to other tools are welcome.
+    validations:
+      required: false

@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Question or help
+    url: https://discord.gg/qZ5bq7EKHY
+    about: Ask on Discord — it's usually the fastest way to get an answer.
+  - name: ✉️ Contact us privately
+    url: https://zapkube.com/contact
+    about: For anything you'd rather not discuss in a public issue.
+  - name: ⬇️ Download Zapkube
+    url: https://zapkube.com/download
+    about: Latest builds for macOS and Linux.
