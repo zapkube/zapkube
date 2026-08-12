@@ -1,0 +1,22 @@
+name: Announce release on Discord
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    # Ignore pre-releases
+    if: github.event.release.prerelease == false
+    steps:
+      - name: Notify Discord
+        # v1.20.0 — pinned to a SHA; bump deliberately, not automatically.
+        uses: SethCohen/github-releases-to-discord@24d166886aee4646d448c8a389ff9e1ebcab3682
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          color: '3066993'
+          footer_title: ${{ github.repository }}
+          footer_timestamp: 'true'
+          # GitHub's generated notes use H2/H3; Discord renders them oversized.
+          # reduce_headings: 'true'
