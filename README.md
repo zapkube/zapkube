@@ -1,4 +1,4 @@
-![Zapkube — The fastest Kubernetes desktop client](.github/assets/hero.png)
+![Zapkube — The fastest Kubernetes desktop client](.github/assets/hero.jpg)
 
 <h1 align="center">Zapkube</h1>
 
