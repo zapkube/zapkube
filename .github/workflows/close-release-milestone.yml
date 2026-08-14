@@ -1,0 +1,78 @@
+name: Close release milestone
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  close-milestone:
+    runs-on: ubuntu-latest
+    # Ignore pre-releases
+    if: github.event.release.prerelease == false
+    permissions:
+      issues: write
+    steps:
+      - name: Close issues, close milestone, recreate "Next release"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const NEXT_RELEASE_TITLE = 'Next release';
+            const releaseTag = context.payload.release.tag_name;
+
+            // Patch releases (x.y.Z, Z>0) are treated as hotfixes cut before
+            // "Next release" is ready, so they must not close/rename it.
+            const semver = releaseTag.match(/^v?(\d+)\.(\d+)\.(\d+)/);
+            if (!semver) {
+              core.warning(`Tag "${releaseTag}" doesn't match semver, skipping milestone automation.`);
+              return;
+            }
+            const [, , , patch] = semver;
+            if (Number(patch) !== 0) {
+              core.info(`"${releaseTag}" is a patch release, skipping milestone automation.`);
+              return;
+            }
+
+            const milestones = await github.paginate(github.rest.issues.listMilestones, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+            });
+            const milestone = milestones.find(m => m.title === NEXT_RELEASE_TITLE);
+            if (!milestone) {
+              core.setFailed(`No open milestone titled "${NEXT_RELEASE_TITLE}" found.`);
+              return;
+            }
+
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              milestone: milestone.number,
+              state: 'open',
+            });
+
+            for (const issue of issues) {
+              if (issue.pull_request) continue; // don't auto-close PRs
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed',
+              });
+              core.info(`Closed issue #${issue.number}`);
+            }
+
+            await github.rest.issues.updateMilestone({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              milestone_number: milestone.number,
+              title: releaseTag,
+              state: 'closed',
+            });
+            core.info(`Renamed milestone "${NEXT_RELEASE_TITLE}" to "${releaseTag}" and closed it.`);
+
+            await github.rest.issues.createMilestone({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: NEXT_RELEASE_TITLE,
+            });
+            core.info(`Created new "${NEXT_RELEASE_TITLE}" milestone.`);
