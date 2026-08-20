@@ -1,6 +1,6 @@
 name: "🚀 Feature Request"
 description: "I have a suggestion for Zapkube!"
-labels: ["feature"]
+type: "Feature"
 body:
   - type: markdown
     attributes:
